@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node / Web
+node_modules/
+dist/
+.pnpm-store/
+
+# Env & local storage
+.env
+storage/*
+!storage/.gitkeep
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+
+.AGENTS.md
+.docs/PROGRESS.md 
