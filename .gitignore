@@ -22,5 +22,6 @@ storage/*
 Thumbs.db
 
 
-.AGENTS.md
-.docs/PROGRESS.md 
+# Local agent docs
+AGENTS.md
+docs/PROGRESS.md
