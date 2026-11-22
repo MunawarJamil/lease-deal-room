@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:5173"
 
     # Database
-    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/lease_deal_room"
+    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5434/lease_deal_room"
 
     # Qdrant
     qdrant_url: str = "http://localhost:6333"
