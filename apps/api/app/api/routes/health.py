@@ -1,8 +1,8 @@
 from fastapi import APIRouter
+from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 
 from app.core.config import get_settings
-from fastapi.responses import PlainTextResponse
 
 router = APIRouter(tags=["health"])
 

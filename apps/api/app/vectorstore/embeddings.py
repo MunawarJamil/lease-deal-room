@@ -3,27 +3,33 @@ from openai import AsyncOpenAI
 from app.core.config import get_settings
 from app.core.exceptions import VectorStoreError
 
-_MODEL_DIMENSIONS: dict[str, int] = {
-    "text-embedding-3-small": 1536,
-    "text-embedding-3-large": 3072,
-    "text-embedding-ada-002": 1536,
-}
-
 
 class EmbeddingClient:
-    """Thin async wrapper around the embedding provider."""
+    """Thin async wrapper around an OpenAI-compatible embedding provider."""
 
-    def __init__(self, *, api_key: str | None = None, model: str | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        api_key: str | None = None,
+        base_url: str | None = None,
+        model: str | None = None,
+        dimensions: int | None = None,
+    ) -> None:
         settings = get_settings()
-        self._api_key = api_key or settings.openai_api_key
+        self._api_key = api_key or settings.resolved_embedding_api_key
+        self._base_url = base_url if base_url is not None else settings.embedding_base_url
         self._model = model or settings.embedding_model
+        self._dimensions = dimensions or settings.embedding_dimensions
         if not self._api_key:
-            raise VectorStoreError("OPENAI_API_KEY is required for embeddings")
-        self._client = AsyncOpenAI(api_key=self._api_key)
+            raise VectorStoreError("EMBEDDING_API_KEY (or LLM_API_KEY / OPENAI_API_KEY) is required")
+        self._client = AsyncOpenAI(
+            api_key=self._api_key,
+            base_url=self._base_url or None,
+        )
 
     @property
     def vector_size(self) -> int:
-        return _MODEL_DIMENSIONS.get(self._model, 1536)
+        return self._dimensions
 
     async def embed_texts(self, texts: list[str], *, batch_size: int = 100) -> list[list[float]]:
         if not texts:
